@@ -47,7 +47,7 @@ https://drive.google.com/file/d/1E7Oh-rI7G3wdUB50T6c-hB-kdiSGvJku/view?usp=shari
 |  mAP50-95   |  0.641         |
 |  IoU   |  0.6948         |
 
-# Screenshots/pictures of any 10 best images selected from validation dataset showing its classificatio
+# Screenshots/pictures of any 10 best images selected from validation dataset showing its classification and detection (bounding box with confidence level).
 ![img- (1214)](https://github.com/bikashrpadhy/Vinayakas/assets/61779823/a26917fe-34f0-43f0-a564-7929ffedb557)
 ![img- (1152)](https://github.com/bikashrpadhy/Vinayakas/assets/61779823/7550acdb-6003-4952-be95-1373f96593a0)
 ![img- (1139)](https://github.com/bikashrpadhy/Vinayakas/assets/61779823/3abe9cd2-eae1-410c-acc2-08d5bd92aea5)
@@ -58,7 +58,7 @@ https://drive.google.com/file/d/1E7Oh-rI7G3wdUB50T6c-hB-kdiSGvJku/view?usp=shari
 ![img- (84)](https://github.com/bikashrpadhy/Vinayakas/assets/61779823/d35e6277-a09a-4769-8483-fc2085b931ed)
 ![img- (42)](https://github.com/bikashrpadhy/Vinayakas/assets/61779823/34c65983-5cf2-43bf-af37-518d7a543400)
 ![img- (21)](https://github.com/bikashrpadhy/Vinayakas/assets/61779823/9cbafe75-cf40-45c3-bdee-b2efd67b0c0b)
-n and detection (bounding box with confidence level).
+
 
 
 # Screenshots/ pictures of achieved interpretability plot of any 10 best images selected from validation dataset.
