@@ -357,7 +357,7 @@ def main():
     batch_size = 8
     validation_split = 0.2
     shuffle_dataset = True
-    random_seed = 42
+    random_seed = 18
     save_dir = './'
     model_name = 'WCE_class'
 
