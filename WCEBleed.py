@@ -173,21 +173,20 @@ class WCEClassSubsetDataset(Dataset):
         return image, label
 
 
-"""### Train.py
-
-"""
-
 # Import necessary libraries
-import os
-import torch
-from tqdm import tqdm
+from sklearn.metrics import precision_score, recall_score, f1_score
+import numpy
 
+# Define the training function that calculates precision, recall, and F1 score
 def train(model, train_loader, val_loader, optimizer, lr_scheduler, criterion, device, num_epochs, save_dir, model_name):
-    # Initialize variables to keep track of the best validation accuracy and the epoch at which it occurred
+    # Initialize variables to keep track of the best validation performance
     best_val_acc = 0.0
     best_epoch = 0
+    best_precision = 0.0
+    best_recall = 0.0
+    best_f1_score = 0.0
 
-    # Loop through epochs
+    # Loop over the specified number of epochs
     for epoch in range(num_epochs):
         # Training phase
         model.train()
@@ -198,16 +197,17 @@ def train(model, train_loader, val_loader, optimizer, lr_scheduler, criterion, d
         # Create a progress bar for training
         train_bar = tqdm(train_loader, desc=f'Epoch {epoch + 1}/{num_epochs} (Train)')
         for inputs, labels in train_bar:
+            # Prepare labels and move data to the specified device (e.g., GPU)
             labels = labels.to(torch.float).unsqueeze(1).to(device)
 
+            # Zero the gradients, perform forward and backward pass, and update weights
             optimizer.zero_grad()
-
             outputs = model(inputs[0].to(device))
-
             loss = criterion(outputs, labels).to(device)
             loss.backward()
             optimizer.step()
 
+            # Update training loss and compute accuracy
             train_loss += loss.item()
 
             # Define a threshold (e.g., 0.5) for binary classification
@@ -216,8 +216,12 @@ def train(model, train_loader, val_loader, optimizer, lr_scheduler, criterion, d
             # Apply thresholding to get binary predictions
             binary_predictions = [(prob > threshold).type(torch.int) for prob in outputs]
             binary_predictions = (torch.tensor(binary_predictions)).unsqueeze(1).to(device)
+
+            # Update total and correct counts for accuracy calculation
             total_train += labels.size(0)
             correct_train += (binary_predictions == labels).sum().item()
+
+            # Update the progress bar
             train_bar.set_postfix(loss=train_loss / (train_bar.n + 1), accuracy=correct_train / total_train)
 
         # Validation phase
@@ -225,16 +229,19 @@ def train(model, train_loader, val_loader, optimizer, lr_scheduler, criterion, d
         val_loss = 0.0
         correct_val = 0
         total_val = 0
+        val_predictions = []  # To store predictions for precision and recall calculation
+        val_targets = []      # To store actual targets for precision and recall calculation
 
         # Create a progress bar for validation
         val_bar = tqdm(val_loader, desc=f'Epoch {epoch + 1}/{num_epochs} (Validation)')
         with torch.no_grad():
             for inputs, labels in val_bar:
+                # Prepare labels and move data to the specified device (e.g., GPU)
                 labels = labels.to(torch.float).unsqueeze(1).to(device)
 
+                # Forward pass and compute validation loss
                 outputs = model(inputs[0].to(device))
                 loss = criterion(outputs, labels).to(device)
-
                 val_loss += loss.item()
 
                 # Define a threshold (e.g., 0.5) for binary classification
@@ -243,26 +250,43 @@ def train(model, train_loader, val_loader, optimizer, lr_scheduler, criterion, d
                 # Apply thresholding to get binary predictions
                 binary_predictions = [(prob > threshold).type(torch.int) for prob in outputs]
                 binary_predictions = (torch.tensor(binary_predictions)).unsqueeze(1).to(device)
+
+                # Extend lists with predictions and actual targets for evaluation
+                val_predictions.extend(binary_predictions.cpu().numpy().astype(numpy.float))
+                val_targets.extend(labels.cpu().numpy())
+
+                # Update total and correct counts for accuracy calculation
                 total_val += labels.size(0)
                 correct_val += (binary_predictions == labels).sum().item()
 
+                # Update the progress bar
                 val_bar.set_postfix(loss=val_loss / (val_bar.n + 1), accuracy=correct_val / total_val)
+        
+        # Calculate precision, recall, and F1 score for the current epoch
+        precision = precision_score(val_targets, val_predictions)
+        recall = recall_score(val_targets, val_predictions)
+        f1 = f1_score(val_targets, val_predictions)
 
-        # Adjust learning rate using the provided scheduler
+        # Adjust the learning rate based on the learning rate scheduler
         lr_scheduler.step()
 
-        # Save the model if it has the best validation accuracy
+        # Save the model checkpoint if it has the best validation accuracy
         if correct_val > best_val_acc:
+            best_precision = precision
+            best_recall = recall
+            best_f1_score = f1
             best_val_acc = correct_val
             best_epoch = epoch
 
-            # Save the model checkpoint
-            checkpoint_path = os.path.join(save_dir, f'{model_name}_best.pth')
+            # Save the model checkpoint to the specified save directory
+            checkpoint_path = os.path.join(save_dir, f'{model_name}_best2.pth')
             torch.save(model.state_dict(), checkpoint_path)
 
-    # Print the best model's epoch and validation accuracy
+    # Print relevant statistics and evaluation metrics after training
+    print(len(val_predictions))
+    print(len(val_targets))
     print(f'Best model found at epoch {best_epoch + 1} with validation accuracy of {best_val_acc / total_val * 100:.2f}%')
-
+    print(f'Best Precision: {best_precision:.2f}, Recall: {best_recall:.2f}, F1 Score: {best_f1_score:.2f}')
 
 
 """### Model.py
@@ -279,11 +303,11 @@ class CustomVgg16(nn.Module):
         super(CustomVgg16, self).__init__()
 
         # Load the pre-trained VGG16 model from torchvision
-        self.vgg16 = torchvision.models.vgg16(pretrained=False)  # Pre-trained weights not used here
+        self.mobilenet_v2 = torchvision.models.vgg16(pretrained=False)  # Pre-trained weights not used here
 
         # Modify the classifier (fully connected) layer
-        in_features = self.vgg16.classifier[6].in_features
-        self.vgg16.classifier[6] = nn.Linear(in_features, num_classes)  # Replace the classifier's last layer
+        in_features = self.mobilenet_v2.classifier[6].in_features
+        self.mobilenet_v2.classifier[6] = nn.Linear(in_features, num_classes)  # Replace the classifier's last layer
 
         # Define a sigmoid activation layer for binary classification
         self.sigmoid = nn.Sigmoid()
@@ -299,7 +323,7 @@ class CustomVgg16(nn.Module):
             torch.Tensor: Output tensor after passing through the model.
         """
         # Apply the modified VGG16 model and sigmoid activation
-        return self.sigmoid(self.vgg16(x))
+        return self.sigmoid(self.mobilenet_v2(x))
 
     def initialize_weights(self):
         """
@@ -307,7 +331,7 @@ class CustomVgg16(nn.Module):
 
         This function uses Xavier initialization for linear layers' weights.
         """
-        for layer in self.vgg16.classifier[1].modules():
+        for layer in self.mobilenet_v2.classifier[1].modules():
             if isinstance(layer, nn.Linear):
                 nn.init.xavier_uniform_(layer.weight)
                 if layer.bias is not None:
@@ -320,10 +344,10 @@ class CustomVgg16(nn.Module):
 # Define the main function
 def main():
     # Specify the root directory where the dataset is located
-    root_dir = '/kaggle/working/WCEBleedGen'
+    root_dir = '../datasets/WCEBleedGen'
     
     # Check if CUDA (GPU) is available, otherwise use CPU
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    device = 'cuda:1' if torch.cuda.is_available() else 'cpu'
     
     # Initialize the dataset
     dataset = WCEClassDataset(root_dir=root_dir)
@@ -334,7 +358,7 @@ def main():
     validation_split = 0.2
     shuffle_dataset = True
     random_seed = 42
-    save_dir = '/kaggle/working/'
+    save_dir = './'
     model_name = 'WCE_class'
 
     # Creating data indices for training and validation splits:
@@ -389,8 +413,6 @@ def main():
     train(custom_vgg16, train_loader, validation_loader, optimizer, lr_scheduler, criterion, device, num_epochs, save_dir, model_name)
 
 # Execute the main function when the script is run
-if __name__ == '__main__':
-    main()
 
 # if __name__ == '__main__':
 #     main()
@@ -400,15 +422,15 @@ if __name__ == '__main__':
 """
 
 # Check if CUDA (GPU) is available, otherwise use CPU
-device = "cuda" if torch.cuda.is_available() else "cpu"
 
 # Define a function to perform testing
 def test(model, test_dir):
     # Set the model to evaluation mode
+    device = "cuda" if torch.cuda.is_available() else "cpu"
     model.eval()
     
     # Define the directory to save predicted images
-    output_directory = '/content/predicted_images/predict/test_data_2'
+    output_directory = './test_data_1'
     os.makedirs(output_directory, exist_ok=True)
     
     # Define a transformation to preprocess the image
@@ -464,19 +486,20 @@ def test(model, test_dir):
         csv_writer.writerows(results)
 
 # Call the main function
-main()
+if __name__ == '__main__':
+    main()
+# main()
 
 # Define the path to the trained model
-model_path = "/content/drive/MyDrive/chall/vgg_without_weight_100_epochs_93.pth"
+    model_path = "./vgg_without_weight_100_epochs_93.pth"
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    # Load the model
+    model = CustomVgg16()
+    model.load_state_dict(torch.load(model_path))
+    model.to(device)
 
-# Load the model
-model = CustomVgg16()
-model.load_state_dict(torch.load(model_path))
-model.to(device)
+    # Define the directory containing test images
+    test_directory = '../datasets/Auto-WCEBleedGen Challenge Test Dataset/Test Dataset 1'
 
-# Define the directory containing test images
-test_directory = '/content/Auto-WCEBleedGen Challenge Test Dataset/Test Dataset 2'
-
-# Call the test function to make predictions
-test(model, test_directory)
-
+    # Call the test function to make predictions
+    test(model, test_directory)
