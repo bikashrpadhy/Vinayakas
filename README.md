@@ -26,8 +26,10 @@ The dataset used for training and validatating the model can be obtained from th
 ```bash
 git clone <https://github.com/bikashrpadhy/Vinayakas>
 ```
-
-
+# Best Model performed in validation set (Classification Model link)
+https://drive.google.com/file/d/1D_femI9n9LmLY2ettvcSdoONiYO83yg_/view?usp=sharing
+# Best Model performed in validation set (Detection Model link)
+https://drive.google.com/file/d/1E7Oh-rI7G3wdUB50T6c-hB-kdiSGvJku/view?usp=sharing
 # Classification metrics (For validation set)
 | Metrics | Values |
 | ------------- | ------------- |
