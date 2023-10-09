@@ -21,7 +21,8 @@ import torch.nn.functional as F
 from torch.utils.data import Subset
 import cv2
 
-"""### Data Augmentation.py
+"""
+Data Augmentation
 
 """
 
@@ -73,7 +74,8 @@ class WCEImageTransforms:
         return img_tensor
 
 
-"""### Dataset.py
+"""
+Dataset.py
 
 """
 
@@ -289,7 +291,8 @@ def train(model, train_loader, val_loader, optimizer, lr_scheduler, criterion, d
     print(f'Best Precision: {best_precision:.2f}, Recall: {best_recall:.2f}, F1 Score: {best_f1_score:.2f}')
 
 
-"""### Model.py
+"""
+Model.py
 
 """
 
@@ -337,7 +340,8 @@ class CustomVgg16(nn.Module):
                 if layer.bias is not None:
                     nn.init.xavier_uniform_(layer.bias)
 
-"""### Main.py
+"""
+Main.py
 
 """
 
@@ -412,22 +416,20 @@ def main():
     # Start the training process
     train(custom_vgg16, train_loader, validation_loader, optimizer, lr_scheduler, criterion, device, num_epochs, save_dir, model_name)
 
-# Execute the main function when the script is run
-
-# if __name__ == '__main__':
-#     main()
-
-"""### Test.py
+"""
+Test function
 
 """
 
-# Check if CUDA (GPU) is available, otherwise use CPU
 
 # Define a function to perform testing
 def test(model, test_dir):
+    
     # Set the model to evaluation mode
-    device = "cuda" if torch.cuda.is_available() else "cpu"
     model.eval()
+    
+    # Check if CUDA (GPU) is available, otherwise use CPU
+    device = "cuda" if torch.cuda.is_available() else "cpu"
     
     # Define the directory to save predicted images
     output_directory = './test_data_1'
@@ -488,11 +490,11 @@ def test(model, test_dir):
 # Call the main function
 if __name__ == '__main__':
     main()
-# main()
 
-# Define the path to the trained model
-    model_path = "./vgg_without_weight_100_epochs_93.pth"
+    # Define the path to the trained model
+    # This part of the code is testing the best model performed in the validation set
     device = "cuda" if torch.cuda.is_available() else "cpu"
+    model_path = "./vgg_without_weight_100_epochs_93.pth"
     # Load the model
     model = CustomVgg16()
     model.load_state_dict(torch.load(model_path))
