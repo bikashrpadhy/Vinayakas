@@ -2,7 +2,7 @@
 # Wireless Capsule Endoscopy (WCE) Bleeding Detection
 
 This repository contains code for a bleeding classification and detection system using Wireless Capsule Endoscopy (WCE) images. The system is designed to classify images as either "bleeding" or "non-bleeding." It includes custom data augmentation, dataset management, model training, and testing components. For detection we used YOLOv8 model in which pre-trained `YOLOv8s.pt` was used. The detection model was used with the following hyper-parameters:
-`epochs = 100` `conf = 0.25` `IoU = 0.4`
+`epochs = 100` `conf = 0.25` `iou = 0.4`
 
 ## Table of Contents
 - [Dataset](#dataset)
@@ -15,7 +15,7 @@ This repository contains code for a bleeding classification and detection system
 - [Methodology_Detection](#Methodology_Detection)
 ## Dataset
 
-The dataset used for training and testing the bleeding detection model can be obtained from the following source:
+The dataset used for training and validatating the model can be obtained from the following source:
 
 [Wireless Capsule Endoscopy Bleeding Dataset (WCEBleedGen)](https://zenodo.org/record/7548320)
 
@@ -172,17 +172,17 @@ Excel sheet contains the image IDs and predicted class labels of testing dataset
    - The code initiates a YOLO training task using Ultralytics with the following parameters:
      - `task`: Specifies that the task is object detection.
      - `mode`: Sets the mode to "train," indicating model training.
-     - `model`: Specifies the YOLO model to be used (YOLOv8s).
+     - `model`: Specifies the YOLO model to be used (yolov8s).
      - `data`: Specifies the path to the data configuration file (WCEBleed.yaml) that defines dataset and training settings.
      - `epochs`: Sets the number of training epochs (e.g., 100).
-     - `pretrained`: Specifies whether to use pre-trained weights (False in this case).
+     - `pretrained`: Specifies whether to use pre-trained weights.
      - `conf` and `iou`: Sets confidence and IoU (Intersection over Union) thresholds.
 
 ## 5. YOLOv8 Prediction:
    - The code initiates a YOLO prediction task using Ultralytics with the following parameters:
      - `task`: Specifies that the task is object detection.
      - `mode`: Sets the mode to "predict," indicating model prediction.
-     - `model`: Specifies the path to a pre-trained YOLO model.
+     - `model`: Specifies the path to the best model performed in the validation set.
      - `source`: Specifies the source directory or file for prediction (test data).
      - `save`: When set to True, it indicates that the predictions will be saved.
 
@@ -191,5 +191,3 @@ Excel sheet contains the image IDs and predicted class labels of testing dataset
 
 ## 7. Methodology Summary:
    - The methodology involves data download, dataset preparation, YOLOv8 model training, and object detection on test data using a pre-trained from the command line interface. The code uses the Ultralytics library to facilitate YOLO-based object detection tasks.
-## Workflow diagram
-![Object_detection_best_model pt](https://github.com/prasadmangala02/Vinayakas/assets/61779823/b39ca9f6-cbc9-4d15-ab61-fb4b1a07249a)
