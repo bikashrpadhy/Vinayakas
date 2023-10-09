@@ -1,0 +1,6 @@
+train: ../WCEBleedGenObjDet/train
+val: ../WCEBleedGenObjDet/val
+# test: ../WCEBleedGen/bleeding
+
+nc: 1
+names: ['bleeding']
