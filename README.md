@@ -1,8 +1,16 @@
 # Vinayakas
 # Wireless Capsule Endoscopy (WCE) Bleeding Detection
 
-This repository contains code for a bleeding detection system using Wireless Capsule Endoscopy (WCE) images. The system is designed to classify images as either "bleeding" or "non-bleeding." It includes custom data augmentation, dataset management, model training, and testing components.
+This repository contains code for a bleeding classification and detection system using Wireless Capsule Endoscopy (WCE) images. The system is designed to classify images as either "bleeding" or "non-bleeding." It includes custom data augmentation, dataset management, model training, and testing components. For detection we used YOLOv8 model in which pre-trained `YOLOv8s.pt` was used. The detection model was used with the following hyper-parameters:
+`epochs = 100` `conf = 0.25` `IoU = 0.4`
 
+## Table of Contents
+- [Dataset](#dataset)
+- [Getting Started](#gettingstarted)
+- [Results](#results)
+- [Excel sheet](#excelsheet)
+- [Run Using](#runusing)
+- [Acknowledgements](#acknowledgements)
 ## Dataset
 
 The dataset used for training and testing the bleeding detection model can be obtained from the following source:
@@ -18,10 +26,6 @@ git clone <>
 cd WCE-Bleeding-Detection
 ```
 
-## Table of Contents
-- [Introduction](#introduction)
-- [Results](#results)
-- [Acknowledgements](#acknowledgements)
 
 # Classification metrics (For validation set)
 | Metrics | Values |
@@ -95,3 +99,13 @@ cd WCE-Bleeding-Detection
 ![A0290_explanation](https://github.com/prasadmangala02/Vinayakas/assets/61779823/b6d0d6bf-f7f2-4855-8096-1f2360ed7e7c)
 ![A0269_explanation](https://github.com/prasadmangala02/Vinayakas/assets/61779823/5ef9494d-995b-4c46-8709-4a1da6b81227)
 ![A0195_explanation](https://github.com/prasadmangala02/Vinayakas/assets/61779823/ebdf3da9-8f16-47aa-bae9-99c81822f051)
+
+
+# Excel sheet
+Excel sheet contains the image IDs and predicted class labels of testing dataset 1 and 2 `predictions_with_label_test_dataset_1.csv` and `predictions_with_label_test_dataset_2.csv`
+# Run Using
+`python3 WCEBleed.py`
+
+# Acknowledgement
+    The code uses PyTorch for deep learning and torchvision for image transformations.
+    The bleeding detection model is based on the VGG16 architecture.
