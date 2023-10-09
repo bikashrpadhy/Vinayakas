@@ -44,7 +44,7 @@ cd WCE-Bleeding-Detection
 |       Average Precision   |    0.792      |
 |  mAP50       | 0.853         |
 |  mAP50-95   |  0.641         |
-|  IoU   |  0.4         |
+|  IoU   |  0.6948         |
 
 # Screenshots/pictures of any 10 best images selected from validation dataset showing its classification and detection (bounding box with confidence level).
 ![img- (1214)](https://github.com/prasadmangala02/Vinayakas/assets/61779823/370f6c05-de46-4f9e-9cdf-0fe8f9616e04)
@@ -191,6 +191,6 @@ Excel sheet contains the image IDs and predicted class labels of testing dataset
    - After training and prediction, the code creates a zip archive containing the training results (runs) and saves it as "runs.zip."
 
 ## 7. Methodology Summary:
-   - The methodology involves data download, dataset preparation, YOLOv8 model training, and object detection on test data using a pre-trained model. The code uses the Ultralytics library to facilitate YOLO-based object detection tasks.
+   - The methodology involves data download, dataset preparation, YOLOv8 model training, and object detection on test data using a pre-trained from the command line interface. The code uses the Ultralytics library to facilitate YOLO-based object detection tasks.
 ## Workflow diagram
 ![Object_detection_best_model pt](https://github.com/prasadmangala02/Vinayakas/assets/61779823/b39ca9f6-cbc9-4d15-ab61-fb4b1a07249a)
