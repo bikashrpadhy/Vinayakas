@@ -1,12 +1,27 @@
 # Vinayakas
-# WCE Bleeding Detection Challenge
+# Wireless Capsule Endoscopy (WCE) Bleeding Detection
 
-This project contains code for the WCE (Wireless Capsule Endoscopy) bleeding detection challenge. It includes data augmentation, a custom VGG16-based model, and a test script to evaluate the model's performance on test images.
+This repository contains code for a bleeding detection system using Wireless Capsule Endoscopy (WCE) images. The system is designed to classify images as either "bleeding" or "non-bleeding." It includes custom data augmentation, dataset management, model training, and testing components.
+
+## Dataset
+
+The dataset used for training and testing the bleeding detection model can be obtained from the following source:
+
+[Wireless Capsule Endoscopy Bleeding Dataset (WCEBleedGen)](https://zenodo.org/record/7548320)
+
+## Getting Started
+
+1. Clone this repository to your local machine:
+
+```bash
+git clone <repository_url>
+cd WCE-Bleeding-Detection
+```
 
 ## Table of Contents
 - [Introduction](#introduction)
 - [Results](#results)
-
+- [Acknowledgements](#acknowledgements)
 
 # Classification metrics (For validation set)
 | Metrics | Values |
@@ -56,6 +71,8 @@ This project contains code for the WCE (Wireless Capsule Endoscopy) bleeding det
 ![A0037](https://github.com/prasadmangala02/Vinayakas/assets/61779823/32828422-a633-463d-8987-113fdd0ba7f4)
 ![A0027](https://github.com/prasadmangala02/Vinayakas/assets/61779823/af35bf1e-ab76-40a3-b5f0-ff215f2b6cbf)
 ![A0020](https://github.com/prasadmangala02/Vinayakas/assets/61779823/3479bbca-a5ac-4f21-9d20-fd5521ac810e)
+![A0002](https://github.com/prasadmangala02/Vinayakas/assets/61779823/cc7adffd-9b5b-471b-880f-f6d1d0485168)
+
 
 ## Test Dataset 2
 ![A0392](https://github.com/prasadmangala02/Vinayakas/assets/61779823/5c28f4ce-55db-40e2-8de6-47036d2a04b5)
