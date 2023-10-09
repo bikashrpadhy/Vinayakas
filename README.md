@@ -11,6 +11,8 @@ This repository contains code for a bleeding classification and detection system
 - [Excel sheet](#excelsheet)
 - [Run Using](#runusing)
 - [Acknowledgements](#acknowledgements)
+- [Methodology_Classification](#Methodology_Classification)
+- [Methodology_Detection](#Methodology_Detection)
 ## Dataset
 
 The dataset used for training and testing the bleeding detection model can be obtained from the following source:
@@ -101,6 +103,10 @@ cd WCE-Bleeding-Detection
 ![A0195_explanation](https://github.com/prasadmangala02/Vinayakas/assets/61779823/ebdf3da9-8f16-47aa-bae9-99c81822f051)
 
 
+# Result graph for detection (Epochs VS various metrics)
+![results](https://github.com/prasadmangala02/Vinayakas/assets/61779823/0e602d29-75ba-476f-91d4-c0e2b9068668)
+
+
 # Excel sheet
 Excel sheet contains the image IDs and predicted class labels of testing dataset 1 and 2 `predictions_with_label_test_dataset_1.csv` and `predictions_with_label_test_dataset_2.csv`
 # Run Using
@@ -108,4 +114,83 @@ Excel sheet contains the image IDs and predicted class labels of testing dataset
 
 # Acknowledgement
     The code uses PyTorch for deep learning and torchvision for image transformations.
-    The bleeding detection model is based on the VGG16 architecture.
+    The bleeding classification model is based on the VGG16 architecture.
+    The bleeding detection model is based on the YOLOv8 architecture.
+
+# Classification Methodology
+
+## 1. Data Acquisition and Preprocessing:
+   - The code begins by downloading and unzipping a dataset from a specified URL. The dataset contains images related to bleeding detection in WCE images.
+
+## 2. Data Augmentation:
+   - A custom data augmentation class called `WCEImageTransforms` is defined. This class performs `random image rotations` and `Gaussian blur` to augment the dataset. These augmentations are used to generate variations of the original images, which can help improve model generalization.
+
+## 3. Dataset Creation:
+   - Two custom dataset classes are defined, `WCEClassDataset` and `WCEClassSubsetDataset`.
+   - `WCEClassDataset` loads and organizes the dataset, creating a list of image paths and their corresponding labels (0 for bleeding, 1 for non-bleeding).
+   - `WCEClassSubsetDataset` is used to create subsets of the dataset based on specified indices and applies data transformations to the images.
+
+## 4. Training:
+   - The code defines a training function that trains a custom VGG16-based neural network model (`CustomVgg16`) on the provided dataset.
+   - During training, it uses binary cross-entropy loss (`nn.BCELoss`) as the loss function and Stochastic Gradient Descent (`torch.optim.SGD`) as the optimizer.
+   - A learning rate scheduler (`torch.optim.lr_scheduler.StepLR`) is used to adjust the learning rate during training.
+   - Training statistics and evaluation metrics (precision, recall, F1 score) are printed during training.
+   - The best model based on validation accuracy is saved.
+
+## 5. Model Definition:
+   - The custom neural network model `CustomVgg16` is defined based on the VGG16 architecture. The model's classifier (fully connected) layer is modified to output a single value for binary classification.
+   - Sigmoid activation is applied to the model's output for binary classification.
+
+## 6. Main Function:
+   - The `main()` function orchestrates the entire training process.
+   - It loads the dataset, splits it into training and validation sets, defines data transformations, initializes the model, optimizer, and loss criterion, and then starts training.
+
+## 7. Testing:
+   - There is a testing function `test` that is defined.
+   - This function loads the model and applies it to a directory of test images.
+   - It calculates test accuracy and saves the model's predictions and visualizations of the test images.
+
+## 8. Execution:
+   - The `main()` function is called when the script is run, triggering the training process.
+
+
+# Detection Methodology
+
+## 1. Data Download and Extraction:
+   - The methodology begins by downloading a zip file from a Zenodo repository using the `wget` command. The zip file contains data related to WCEBleedGen.
+   - It then uses the `unzip` command to extract the contents of the downloaded zip file.
+
+## 2. Data Splitting:
+   - The code prepares the data for object detection by organizing it into training and validation sets.
+   - It defines a root directory containing the data and an output directory for the object detection dataset.
+   - Images are shuffled randomly, and a specified percentage (e.g., 20%) of the images are moved to the validation set while the rest are used for training.
+   - The data is organized into subdirectories for images and labels in both the training and validation sets.
+
+## 3. Ultralytics Installation:
+   - The code installs the Ultralytics library, which is a toolkit for training and deploying object detection models, including YOLO.
+
+## 4. YOLOv8 Training:
+   - The code initiates a YOLO training task using Ultralytics with the following parameters:
+     - `task`: Specifies that the task is object detection.
+     - `mode`: Sets the mode to "train," indicating model training.
+     - `model`: Specifies the YOLO model to be used (YOLOv8s).
+     - `data`: Specifies the path to the data configuration file (WCEBleed.yaml) that defines dataset and training settings.
+     - `epochs`: Sets the number of training epochs (e.g., 100).
+     - `pretrained`: Specifies whether to use pre-trained weights (False in this case).
+     - `conf` and `iou`: Sets confidence and IoU (Intersection over Union) thresholds.
+
+## 5. YOLOv8 Prediction:
+   - The code initiates a YOLO prediction task using Ultralytics with the following parameters:
+     - `task`: Specifies that the task is object detection.
+     - `mode`: Sets the mode to "predict," indicating model prediction.
+     - `model`: Specifies the path to a pre-trained YOLO model.
+     - `source`: Specifies the source directory or file for prediction (test data).
+     - `save`: When set to True, it indicates that the predictions will be saved.
+
+## 6. Archiving Training Results:
+   - After training and prediction, the code creates a zip archive containing the training results (runs) and saves it as "runs.zip."
+
+## 7. Methodology Summary:
+   - The methodology involves data download, dataset preparation, YOLOv8 model training, and object detection on test data using a pre-trained model. The code uses the Ultralytics library to facilitate YOLO-based object detection tasks.
+## Workflow diagram
+![Object_detection_best_model pt](https://github.com/prasadmangala02/Vinayakas/assets/61779823/b39ca9f6-cbc9-4d15-ab61-fb4b1a07249a)
