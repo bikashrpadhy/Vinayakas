@@ -14,7 +14,7 @@ The dataset used for training and testing the bleeding detection model can be ob
 1. Clone this repository to your local machine:
 
 ```bash
-git clone <repository_url>
+git clone <[repository_url](https://github.com/prasadmangala02/Vinayakas)>
 cd WCE-Bleeding-Detection
 ```
 
