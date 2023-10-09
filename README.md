@@ -47,17 +47,19 @@ https://drive.google.com/file/d/1E7Oh-rI7G3wdUB50T6c-hB-kdiSGvJku/view?usp=shari
 |  mAP50-95   |  0.641         |
 |  IoU   |  0.6948         |
 
-# Screenshots/pictures of any 10 best images selected from validation dataset showing its classification and detection (bounding box with confidence level).
-![img- (1214)](https://github.com/prasadmangala02/Vinayakas/assets/61779823/370f6c05-de46-4f9e-9cdf-0fe8f9616e04)
-![img- (1152)](https://github.com/prasadmangala02/Vinayakas/assets/61779823/829adf40-785d-4329-bcdf-5d2e302bf6ff)
-![img- (1139)](https://github.com/prasadmangala02/Vinayakas/assets/61779823/afe14f92-35a2-4e81-ba51-15d9c7bf53f5)
-![img- (1122)](https://github.com/prasadmangala02/Vinayakas/assets/61779823/e5e94148-322d-460f-a608-0c019acc47ec)
-![img- (939)](https://github.com/prasadmangala02/Vinayakas/assets/61779823/c32bae3a-0f90-4063-af8d-5cdbddbefaec)
-![img- (154)](https://github.com/prasadmangala02/Vinayakas/assets/61779823/779e6ca2-d111-4afa-b734-8179f87452f1)
-![img- (122)](https://github.com/prasadmangala02/Vinayakas/assets/61779823/b42213f1-6eba-462e-9c2a-b51fd8568835)
-![img- (84)](https://github.com/prasadmangala02/Vinayakas/assets/61779823/68c0f3d6-952d-4916-9e5d-a3b9b945e3f8)
-![img- (42)](https://github.com/prasadmangala02/Vinayakas/assets/61779823/549f92dd-328b-4f79-a333-f005b252add9)
-![img- (21)](https://github.com/prasadmangala02/Vinayakas/assets/61779823/e9258f9e-639f-4442-8005-44095c6982a9)
+# Screenshots/pictures of any 10 best images selected from validation dataset showing its classificatio
+![img- (1214)](https://github.com/bikashrpadhy/Vinayakas/assets/61779823/a26917fe-34f0-43f0-a564-7929ffedb557)
+![img- (1152)](https://github.com/bikashrpadhy/Vinayakas/assets/61779823/7550acdb-6003-4952-be95-1373f96593a0)
+![img- (1139)](https://github.com/bikashrpadhy/Vinayakas/assets/61779823/3abe9cd2-eae1-410c-acc2-08d5bd92aea5)
+![img- (1122)](https://github.com/bikashrpadhy/Vinayakas/assets/61779823/7ecb06cc-2b33-4503-8b2b-53f884ddbd71)
+![img- (939)](https://github.com/bikashrpadhy/Vinayakas/assets/61779823/bdfd14fd-2ce6-405b-b92b-cbc1f5116eb0)
+![img- (154)](https://github.com/bikashrpadhy/Vinayakas/assets/61779823/d4bfbbd7-7161-4930-9d6f-8cfb9b537239)
+![img- (122)](https://github.com/bikashrpadhy/Vinayakas/assets/61779823/08892c82-d951-45a1-8fd1-73f53357b9f6)
+![img- (84)](https://github.com/bikashrpadhy/Vinayakas/assets/61779823/d35e6277-a09a-4769-8483-fc2085b931ed)
+![img- (42)](https://github.com/bikashrpadhy/Vinayakas/assets/61779823/34c65983-5cf2-43bf-af37-518d7a543400)
+![img- (21)](https://github.com/bikashrpadhy/Vinayakas/assets/61779823/9cbafe75-cf40-45c3-bdee-b2efd67b0c0b)
+n and detection (bounding box with confidence level).
+
 
 # Screenshots/ pictures of achieved interpretability plot of any 10 best images selected from validation dataset.
 
